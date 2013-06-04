@@ -4,6 +4,18 @@
 </head>
 <body>
 
+<!-- Template -->
+<script id="todos-tmpl" type="text/html">
+  <% _.each( todos, function(item){ %>
+    <div class='todo-item'>
+      <p>Title: <%= item.get('title') %> </p>  
+      <p>Done: <%= item.get('done') %> </p>
+    </div>
+  <% }); %>
+</script>
+
+<div id="listOfTodos"></div>
+
 <script src="scripts/jquery-1.10.0.js"></script>
 <script src="scripts/underscore.js"></script>
 <script src="scripts/backbone.js"></script>
@@ -31,27 +43,20 @@
 
   // view for the list of todos 
   var ListView = Backbone.View.extend({
-    tagName: 'ul',
+    template: _.template($('#todos-tmpl').html()),
     render: function() {
-      _(this.collection).each(function(todo){
-        this.$el.append(new TodoView({model : todo}).render().el);
-      }, this);
-      return this;
-    }
-  });
-
-  // view for a todo
-  var TodoView = Backbone.View.extend({
-    tagName: 'li',
-    render: function() {
-      this.$el.html(this.model.get('title'));
+        $(this.el).html(this.template({
+            todos: this.collection
+        }));
+        $('#listOfTodos').append(this.el);
       return this;
     }
   });
 
   // add list of todos to DOM
   $(function() {
-    $('body').html(new ListView({ collection: todos }).render().el);
+    var todosList = new ListView({ collection: todos });
+    todosList.render();
   })
 </script>
 
