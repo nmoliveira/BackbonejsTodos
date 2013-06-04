@@ -1,0 +1,59 @@
+<html>
+<head>
+  <title>Backbone Trainning</title>
+</head>
+<body>
+
+<script src="scripts/jquery-1.10.0.js"></script>
+<script src="scripts/underscore.js"></script>
+<script src="scripts/backbone.js"></script>
+
+<script type="text/javascript">
+  // array of todos
+  var todos = [
+    new Backbone.Model({
+      title: 'Task 1',
+      done: false
+    }),
+    new Backbone.Model({
+      title: 'Task 2',
+      done: false
+    }),
+    new Backbone.Model({
+      title: 'Task 3',
+      done: false
+    }),
+    new Backbone.Model({
+      title: 'Task 4',
+      done: false
+    })
+  ];
+
+  // view for the list of todos 
+  var ListView = Backbone.View.extend({
+    tagName: 'ul',
+    render: function() {
+      _(this.collection).each(function(todo){
+        this.$el.append(new TodoView({model : todo}).render().el);
+      }, this);
+      return this;
+    }
+  });
+
+  // view for a todo
+  var TodoView = Backbone.View.extend({
+    tagName: 'li',
+    render: function() {
+      this.$el.html(this.model.get('title'));
+      return this;
+    }
+  });
+
+  // add list of todos to DOM
+  $(function() {
+    $('body').html(new ListView({ collection: todos }).render().el);
+  })
+</script>
+
+</body>
+</html>
