@@ -8,8 +8,7 @@
 <script id="todos-tmpl" type="text/html">
   <% _.each( todos, function(item){ %>
     <div class='todo-item'>
-      <p>Title: <%= item.get('title') %> </p>  
-      <p>Done: <%= item.get('done') %> </p>
+      <p>Title: <%= item.get('title') %> </p>
     </div>
   <% }); %>
 </script>
@@ -21,25 +20,17 @@
 <script src="scripts/backbone.js"></script>
 
 <script type="text/javascript">
-  // array of todos
-  var todos = [
-    new Backbone.Model({
-      title: 'Task 1',
-      done: false
-    }),
-    new Backbone.Model({
-      title: 'Task 2',
-      done: false
-    }),
-    new Backbone.Model({
-      title: 'Task 3',
-      done: false
-    }),
-    new Backbone.Model({
-      title: 'Task 4',
-      done: false
-    })
-  ];
+  // returns array of todos
+  function fakeTodos(){
+    var todos = [];
+    for (var i = 1; i <= 1000; i++) {
+      var todo =  new Backbone.Model({
+        title: 'Task ' + i,
+      })
+      todos.push(todo);
+    }  
+    return todos;
+  }
 
   // view for the list of todos 
   var ListView = Backbone.View.extend({
@@ -53,8 +44,10 @@
     }
   });
 
-  // add list of todos to DOM
   $(function() {
+    // create array of todos
+    var todos = fakeTodos();
+    // the todos list
     var todosList = new ListView({ collection: todos });
     todosList.render();
   })
