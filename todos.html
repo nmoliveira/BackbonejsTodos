@@ -4,21 +4,13 @@
 </head>
 <body>
 
-<!-- Template -->
-<script id="todos-tmpl" type="text/x-handlebars-template">
-  {{#each todos}}
-    <div class='todo-item'>
-      <p>Title: {{ this.title }} </p>
-    </div>
-  {{/each}}
-</script>
-
 <div id="listOfTodos"></div>
 
-<script src="scripts/jquery-1.10.0.js"></script>
+<script src="scripts/jquery-1.10.0.min.js"></script>
 <script src="scripts/underscore.js"></script>
 <script src="scripts/backbone.js"></script>
 <script src="scripts/handlebars.js"></script>
+<script src="scripts/templates.js"></script>
 
 <script type="text/javascript">
   // returns array of todos
@@ -35,9 +27,8 @@
 
   // view for the list of todos 
   var ListView = Backbone.View.extend({
-    template:  Handlebars.compile($('#todos-tmpl').html()),
+    template:  Handlebars.templates.todos,
     render: function() {
-        debugger;
         $(this.el).html(this.template({
             todos: this.collection.toJSON()
         }));
