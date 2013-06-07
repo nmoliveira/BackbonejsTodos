@@ -5,12 +5,12 @@
 <body>
 
 <!-- Template -->
-<script id="todos-tmpl" type="text/html">
-  <% _.each( todos, function(item){ %>
+<script id="todos-tmpl" type="text/x-handlebars-template">
+  {{#each todos}}
     <div class='todo-item'>
-      <p>Title: <%= item.get('title') %> </p>
+      <p>Title: {{ this.title }} </p>
     </div>
-  <% }); %>
+  {{/each}}
 </script>
 
 <div id="listOfTodos"></div>
@@ -18,12 +18,13 @@
 <script src="scripts/jquery-1.10.0.js"></script>
 <script src="scripts/underscore.js"></script>
 <script src="scripts/backbone.js"></script>
+<script src="scripts/handlebars.js"></script>
 
 <script type="text/javascript">
   // returns array of todos
   function fakeTodos(){
     var todos = [];
-    for (var i = 1; i <= 1000; i++) {
+    for (var i = 1; i <= 10; i++) {
       var todo =  new Backbone.Model({
         title: 'Task ' + i,
       })
@@ -34,10 +35,11 @@
 
   // view for the list of todos 
   var ListView = Backbone.View.extend({
-    template: _.template($('#todos-tmpl').html()),
+    template:  Handlebars.compile($('#todos-tmpl').html()),
     render: function() {
+        debugger;
         $(this.el).html(this.template({
-            todos: this.collection
+            todos: this.collection.toJSON()
         }));
         $('#listOfTodos').append(this.el);
       return this;
@@ -45,8 +47,8 @@
   });
 
   $(function() {
-    // create array of todos
-    var todos = fakeTodos();
+    // create todos
+    var todos = new Backbone.Collection(fakeTodos());
     // the todos list
     var todosList = new ListView({ collection: todos });
     todosList.render();
